@@ -8,39 +8,30 @@ import java.io.IOException;
 public class Victim {
     private String webUrl;
     private String parametr =".price > strong";
-    private String priceString;
-    private float price;
-    private String[] prices = new String[1000];
+    private int[] pricesInt = new int[1000];
+
 
     public void checkUrl() throws IOException {
             Document document = Jsoup.connect(webUrl).get();
-        //document.select(".price > strong").forEach(System.out::println);
     }
 
-    public void SitePrise(){
+
+    public void sitePrise(){
         try {
+            String[] prices = new String[1000];
             int j = -1;
             Document document = Jsoup.connect(webUrl).get();
             Elements elements = document.select(parametr);
             for(Element element: elements){
                 ++j;
-                //System.out.println(element.ownText());
                 prices[j] = element.ownText();
-                System.out.println(prices[j]);
+                prices[j] = prices[j].replaceAll(" ","");
+                prices[j] = prices[j].replaceAll("грн.","");
+                int localPrise;
+                localPrise = Integer.parseInt(prices[j]);
+                pricesInt[j] = localPrise;
+                System.out.println(pricesInt[j]);
             }
-            priceString = String.valueOf(document.select(parametr));
-
-            int first = 0,last = 0;
-            for(int i = 2; i < priceString.length(); ++i){
-                if(priceString.charAt(i) == '>')first = i+1;
-                if(priceString.charAt(i) == 'г'){
-                    last = i;
-                    break;
-                }
-            }
-            priceString = priceString.substring(first,last);
-           // System.out.println(priceString);
-            price = Float.parseFloat(priceString.replaceAll(" ",""));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -49,6 +40,9 @@ public class Victim {
 
 
 
+    public void savePrices(int[] pricesInt){
+
+    }
 
     //Constructor
     public Victim(String webUrl) {
@@ -75,19 +69,5 @@ public class Victim {
         this.parametr = parametr;
     }
 
-    public String getPriceString() {
-        return priceString;
-    }
 
-    public void setPriceString(String priceString) {
-        this.priceString = priceString;
-    }
-
-    public float getPrice() {
-        return price;
-    }
-
-    public void setPrice(float price) {
-        this.price = price;
-    }
 }
