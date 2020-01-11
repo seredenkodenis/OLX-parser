@@ -3,6 +3,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class Victim {
@@ -32,6 +34,10 @@ public class Victim {
                 pricesInt[j] = localPrise;
                 System.out.println(pricesInt[j]);
             }
+
+            //save prices to file
+            savePrices(pricesInt);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -41,7 +47,19 @@ public class Victim {
 
 
     public void savePrices(int[] pricesInt){
-
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("prices"));
+            for(int i = 0; i < pricesInt.length; ++i){
+                if(pricesInt[i] == 0){
+                    break;
+                }
+                writer.write(i+1 + ") " + pricesInt[i]);
+                writer.newLine();
+            }
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     //Constructor
