@@ -131,4 +131,11 @@ public class Victim {
         this.webUrl = webUrl;
     }
 
+    public int[] getPricesInt() {
+        return pricesInt;
+    }
+
+    public void setPricesInt(int[] pricesInt) {
+        this.pricesInt = pricesInt;
+    }
 }

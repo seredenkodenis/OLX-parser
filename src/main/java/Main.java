@@ -1,3 +1,5 @@
+import sun.applet.AppletResourceLoader;
+
 import java.io.IOException;
 import java.util.Scanner;
 public class Main {
@@ -8,19 +10,33 @@ public class Main {
         System.out.println("Created by Denys Seredenko");
         System.out.println("----------------------------");
         System.out.println("Please input your CORRECT url address");
-        String url = in.nextLine();
+        //String url = in.nextLine();
+        String url = "https://www.olx.ua/list/q-airpods//";
+
         System.out.println("Claim! Write how many pages do you want to parse?(Type a count)");
         System.out.println("We recommend you to write < 5");
         Integer pages = in.nextInt();
-        System.out.println("Claim! Now choose your option");
-      Victim rozetka = new Victim();
-      rozetka.setWebUrl(url);
-      for(int j = 0; j < pages; ++j){
-              rozetka.setWebUrl(url + "?page=" + j+1);
-          rozetka.checkUrl();
-          rozetka.sitePrise();
-          rozetka.getNames();
-          rozetka.getUrls();
-      }
+        System.out.println("Please wait, we are counting!");
+        long medium = 0;
+        int j;
+
+        Victim rozetka = new Victim();
+        rozetka.setWebUrl(url);
+        for(j = 0; j < pages; ++j){
+            rozetka.setWebUrl(url + "?page=" + j+1);
+            rozetka.checkUrl();
+            rozetka.sitePrise();
+            int[] prices =  rozetka.getPricesInt();
+            for(int i = 0; i < prices.length; ++i){
+                if(prices[i] == 0) break;
+                medium += prices[i];
+            }
+            rozetka.getNames();
+            rozetka.getUrls();
+        }
+        medium /= (j*44);
+        System.out.println("Some statistic for you!");
+        System.out.println("-----------------------");
+        System.out.println("Medium of your product is: " + medium + " grn.");
     }
 }
