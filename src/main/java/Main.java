@@ -10,12 +10,11 @@ public class Main {
         System.out.println("Created by Denys Seredenko");
         System.out.println("----------------------------");
         System.out.println("Please input your CORRECT url address");
-        //String url = in.nextLine();
-        String url = "https://www.olx.ua/list/q-airpods//";
+        String url = in.nextLine();
 
         System.out.println("Claim! Write how many pages do you want to parse?(Type a count)");
         System.out.println("We recommend you to write < 5");
-        Integer pages = in.nextInt();
+        int pages = in.nextInt();
         System.out.println("Please wait, we are counting!");
         long medium = 0;
         int j;
@@ -27,9 +26,9 @@ public class Main {
             rozetka.checkUrl();
             rozetka.sitePrise();
             int[] prices =  rozetka.getPricesInt();
-            for(int i = 0; i < prices.length; ++i){
-                if(prices[i] == 0) break;
-                medium += prices[i];
+            for (int price : prices) {
+                if (price == 0) break;
+                medium += price;
             }
             rozetka.getNames();
             rozetka.getUrls();
