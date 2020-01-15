@@ -12,9 +12,11 @@ public class Victim {
     private String priceParametr =".price > strong";
     private String nameParametr = ".rel > h3 > a > strong";
     private String urlParametr = ".rel > h3 > a[href]";
+    private String viewParametr = "#offerbottombar > .pdingtop10 >  strong";
     private int[] pricesInt = new int[1000];
     private String[] names = new String[1000];
     private String[] urls = new String[1000];
+    private int[] views = new int[1000];
     private Document document;
     int col  = 1;
 
@@ -53,7 +55,7 @@ public class Victim {
     //Method for prices save
     public void savePrices(int[] pricesInt){
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(String.valueOf(col) + "_prices"));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(col + "_prices"));
             for(int i = 0; i < pricesInt.length; ++i){
                 if(pricesInt[i] == 0){
                     break;
@@ -81,7 +83,7 @@ public class Victim {
     //Method for saving titles
     public void saveNames(String[] names){
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(String.valueOf(col) + "_names"));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(col + "_names"));
             for(int i = 0; i < names.length; ++i){
                 if(names[i] == null) break;
                 writer.write(i+1 + ") " + names[i]);
@@ -98,18 +100,41 @@ public class Victim {
         int j = -1;
         for(Element element: elements){
             j++;
-            urls[j] = String.format("%s", element.attr("abs:href"),element.text());
+            urls[j] = String.format("%s", element.attr("abs:href"),element.text()); try {
+                Document doc = Jsoup.connect(urls[j]).get();
+                Elements elements1 = doc.select(viewParametr);
+                for(Element element2: elements1){
+                    views[j] = Integer.parseInt(element2.ownText());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         saveUrls(urls);
+        saveViews(views);
         col++;
     }
 
     public void saveUrls(String[] urls){
         try {
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(String.valueOf(col) + "_urls"));
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(col + "_urls"));
             for(int i = 0; i < urls.length; ++i){
                 if(urls[i] == null) break;
                 bufferedWriter.write(i+1 + ") " + urls[i]);
+                bufferedWriter.newLine();
+            }
+            bufferedWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveViews(int[] views){
+        try {
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(col + "_views"));
+            for(int i = 0; i < views.length; ++i){
+                if(views[i] == 0) break;
+                bufferedWriter.write(i+1 + ") " + views[i]);
                 bufferedWriter.newLine();
             }
             bufferedWriter.close();
