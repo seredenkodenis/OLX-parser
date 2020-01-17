@@ -13,10 +13,12 @@ public class Victim {
     private String nameParametr = ".rel > h3 > a > strong";
     private String urlParametr = ".rel > h3 > a[href]";
     private String viewParametr = "#offerbottombar > .pdingtop10 >  strong";
+    private String dateParametr = ".offer-titlebox__details > em";
     private int[] pricesInt = new int[1000];
     private String[] names = new String[1000];
     private String[] urls = new String[1000];
     private int[] views = new int[1000];
+    private String[] dates = new String[1000];
     private Document document;
     int col  = 1;
 
@@ -103,14 +105,24 @@ public class Victim {
             urls[j] = String.format("%s", element.attr("abs:href"),element.text()); try {
                 Document doc = Jsoup.connect(urls[j]).get();
                 Elements elements1 = doc.select(viewParametr);
-                for(Element element2: elements1){
-                    views[j] = Integer.parseInt(element2.ownText());
+                Elements elements2 = doc.select(dateParametr);
+                for(Element element1: elements1){
+                    views[j] = Integer.parseInt(element1.ownText());
+                }
+                for(Element element2: elements2){
+                    String s1 = String.valueOf(element2);
+                    if(s1.charAt(5) == 'Д'){
+                        dates[j] = s1.substring(18,39);
+                    }else{
+                        dates[j] = s1.substring(121,142);
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         saveUrls(urls);
+        saveDates(dates);
         saveViews(views);
         col++;
     }
@@ -121,6 +133,20 @@ public class Victim {
             for(int i = 0; i < urls.length; ++i){
                 if(urls[i] == null) break;
                 bufferedWriter.write(i+1 + ") " + urls[i]);
+                bufferedWriter.newLine();
+            }
+            bufferedWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveDates(String[] urls){
+        try {
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(col + "_dates"));
+            for(int i = 0; i < dates.length; ++i){
+                if(dates[i] == null) break;
+                bufferedWriter.write(i+1 + ") " + dates[i]);
                 bufferedWriter.newLine();
             }
             bufferedWriter.close();

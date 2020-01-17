@@ -5,6 +5,7 @@ OLX-parser is a parser of products that you want to find.
 
   - Extraction products to files
   - Function of average prise
+  - See dates of product
 
 
 You can also:
