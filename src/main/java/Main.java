@@ -10,8 +10,8 @@ public class Main {
         System.out.println("Created by Denys Seredenko");
         System.out.println("----------------------------");
         System.out.println("Please input your CORRECT url address");
-       // String url = in.nextLine();
-        String url = "https://www.olx.ua/list/q-Iphone7/";
+        String url = in.nextLine();
+       // String url = "https://www.olx.ua/list/q-Iphone7/";
         System.out.println("Claim! Write how many pages do you want to parse?(Type a count)");
         System.out.println("We recommend you to write < 5");
         int pages = in.nextInt();
