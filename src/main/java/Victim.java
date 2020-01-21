@@ -15,12 +15,14 @@ public class Victim {
     private String viewParametr = "#offerbottombar > .pdingtop10 >  strong";
     private String dateParametr = ".offer-titlebox__details > em";
     private String cityParametr = ".offer-titlebox__details > a > strong";
+    private String ownerParametr = ".offer-user__details  > h4 > a";
     private int[] pricesInt = new int[1000];
     private String[] names = new String[1000];
     private String[] urls = new String[1000];
     private int[] views = new int[1000];
     private String[] dates = new String[1000];
     private String[] cities = new String[1000];
+    private String[] owners = new String[1000];
     private Document document;
     int col  = 1;
 
@@ -109,12 +111,18 @@ public class Victim {
                 Elements elements1 = doc.select(viewParametr);
                 Elements elements2 = doc.select(dateParametr);
                 Elements elements3 = doc.select(cityParametr);
+                Elements elements4 = doc.select(ownerParametr);
                 for(Element element1: elements1){
                     views[j] = Integer.parseInt(element1.ownText());
                 }
                 for(Element element3: elements3){
                     String s2 = String.valueOf(element3);
                     cities[j] = s2.substring(8,s2.length()-9);
+                }
+                for(Element element4: elements4){
+                    String s2 = String.valueOf(element4);
+                    owners[j] = s2;
+                    System.out.println(owners[j]);
                 }
                 for(Element element2: elements2){
                     String s1 = String.valueOf(element2);
@@ -132,6 +140,7 @@ public class Victim {
         saveDates(dates);
         saveViews(views);
         saveCities(cities);
+        saveOwners(owners);
         col++;
     }
 
@@ -169,6 +178,19 @@ public class Victim {
             for(int i = 0; i < cities.length; ++i){
                 if(cities[i] == null) break;
                 bufferedWriter.write(i+1 + ") " + cities[i]);
+                bufferedWriter.newLine();
+            }
+            bufferedWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void saveOwners(String[] owners){
+        try {
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(col + "_owners"));
+            for(int i = 0; i < owners.length; ++i){
+                if(owners[i] == null) break;
+                bufferedWriter.write(i+1 + ") " + owners[i]);
                 bufferedWriter.newLine();
             }
             bufferedWriter.close();
